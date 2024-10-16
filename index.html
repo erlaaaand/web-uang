@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hitung Uang Bulanan</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f4f7fc;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        .card {
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .result-box {
+            background-color: #f1f1f1;
+            padding: 10px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <h4 class="text-center">Hitung Sisa Uang Bulanan</h4>
+                    <form id="hitungUangForm">
+                        <div class="form-group">
+                            <label for="uangBulanan">Uang Bulanan (Rp)</label>
+                            <input type="number" class="form-control" id="uangBulanan"
+                                placeholder="Masukkan uang bulanan" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="jatahHarian">Jatah Uang Harian (Rp)</label>
+                            <input type="number" class="form-control" id="jatahHarian"
+                                placeholder="Masukkan jatah harian" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="sisaUangPengguna">Sisa Uang Hari Ini (Rp)</label>
+                            <input type="number" class="form-control" id="sisaUangPengguna"
+                                placeholder="Masukkan sisa uang Anda saat ini" required>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <button type="button" class="btn btn-primary btn-block"
+                                    onclick="hitungSisaUang()">Hitung</button>
+                            </div>
+                            <div class="col-md-6">
+                                <button type="button" class="btn btn-secondary btn-block"
+                                    onclick="resetForm()">Refresh</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="mt-4 result-box" id="result" style="display: none;">
+                        <p id="tanggalHariIni"></p>
+                        <p id="uangTerpakai"></p>
+                        <p id="sisaUangBulanan"></p>
+                        <p id="hasil"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function hitungSisaUang() {
+            // Ambil nilai input dari pengguna
+            const uangBulanan = parseInt(document.getElementById('uangBulanan').value);
+            const jatahHarian = parseInt(document.getElementById('jatahHarian').value);
+            const sisaUangPengguna = parseInt(document.getElementById('sisaUangPengguna').value);
+
+            // Dapatkan tanggal hari ini
+            const today = new Date();
+            const currentDay = today.getDate();
+            const currentMonth = today.getMonth() + 1; // Bulan dimulai dari 0
+            const currentYear = today.getFullYear();
+
+            // Hitung total uang yang seharusnya terpakai sampai hari ini
+            const uangTerpakai = jatahHarian * currentDay;
+
+            // Hitung sisa uang bulanan yang diharapkan
+            const sisaUangBulanan = uangBulanan - uangTerpakai;
+
+            // Hitung sisa uang berlebih atau kekurangan
+            const sisaUangBerlebih = sisaUangPengguna - sisaUangBulanan;
+
+            // Update tampilan hasil
+            document.getElementById('tanggalHariIni').innerHTML = `Tanggal hari ini: ${today.toLocaleDateString()}`;
+            document.getElementById('uangTerpakai').innerHTML = `Total uang yang terpakai hingga hari ini: Rp ${uangTerpakai}`;
+            document.getElementById('sisaUangBulanan').innerHTML = `Sisa uang bulanan yang diharapkan: Rp ${sisaUangBulanan}`;
+
+            if (sisaUangBerlebih > 0) {
+                document.getElementById('hasil').innerHTML = `Anda memiliki uang berlebih sebesar: Rp ${sisaUangBerlebih}`;
+            } else if (sisaUangBerlebih < 0) {
+                document.getElementById('hasil').innerHTML = `Anda kekurangan uang sebesar: Rp ${-sisaUangBerlebih}`;
+            } else {
+                document.getElementById('hasil').innerHTML = "Uang Anda sesuai dengan anggaran bulanan.";
+            }
+
+            // Tampilkan hasil
+            document.getElementById('result').style.display = 'block';
+        }
+
+        // Fungsi untuk mereset form dan hasil perhitungan
+        function resetForm() {
+            document.getElementById('hitungUangForm').reset();
+            document.getElementById('result').style.display = 'none';
+        }
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>
